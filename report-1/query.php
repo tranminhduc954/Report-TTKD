@@ -82,8 +82,8 @@ oci_close($conn);
         </tbody>
     </table>
     <br>
-    <a href="./index-1.html">Quay lại phần tìm kiếm</a>
+    <a href="./home-1.html">Quay lại phần tìm kiếm</a>
     <br>
-    <a href="../home.html">Quay lại trang chủ</a>
+    <a href="../index.html">Quay lại trang chủ</a>
 </body>
 </html>
