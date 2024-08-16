@@ -54,44 +54,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   AND ctkm.tien_td <> 0
                   AND dbtb.ma_tb = :p_ma_tb
         )
-        SELECT * 
-        FROM (
-            SELECT ct.* 
-            FROM chi_tiet ct, css.v_bd_goi_dadv goi
+        SELECT * FROM (
+            SELECT ct.* FROM chi_tiet ct, css.v_bd_goi_dadv goi
             WHERE ct.goi_id = goi.goi_id AND trangthai = 1 AND ct.thuebao_id = goi.thuebao_id
-            UNION 
-            SELECT * 
-            FROM chi_tiet 
-            WHERE goi_id IS NULL
+            UNION SELECT * FROM chi_tiet WHERE goi_id IS NULL
         )
-        ORDER BY goi_id, nhom_datcoc, ten_km, so_thang_dtc
-    ";
+        ORDER BY goi_id, nhom_datcoc, ten_km, so_thang_dtc";
+        
+        $stid = oci_parse($conn, $query);
+        oci_bind_by_name($stid, ':p_ma_tb', $ma_tb);
 
-    $stid = oci_parse($conn, $query);
-    oci_bind_by_name($stid, ':p_ma_tb', $ma_tb);
-    oci_execute($stid);
+        // Thực thi truy vấn
+        oci_execute($stid);
 
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment;filename="report.csv"');
+        echo "<style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            text-align: left;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>";
 
-    $output = fopen('php://output', 'w');
+    echo "<h2 style='text-align: center;'>Kết quả Báo Cáo:</h2>";
+    echo "<table>
+            <tr>
+                <th>Thuebao ID</th>
+                <th>Mã TB</th>
+                <th>Thương Hiệu</th>
+                <th>Gói ID</th>
+                <th>Tên Gói</th>
+                <th>Nhóm Đặt Cọc</th>
+                <th>Khuyến Mãi ID</th>
+                <th>Tên KM</th>
+                <th>Chi Tiết KM ID</th>
+                <th>Tên Chi Tiết KM</th>
+                <th>Số Tháng Đặt Cọc</th>
+                <th>Đặt Cọc CSD</th>
+                <th>Tiền TĐ</th>
+                <th>Người CN</th>
+                <th>Ngày CN</th>
+            </tr>";
 
-    // In ra tiêu đề cột
-    $ncols = oci_num_fields($stid);
-    $headers = [];
-    for ($i = 1; $i <= $ncols; $i++) {
-        $headers[] = oci_field_name($stid, $i);
+    while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
+        echo "<tr>";
+        foreach ($row as $item) {
+            echo "<td>" . htmlspecialchars($item, ENT_QUOTES) . "</td>";
+        }
+        echo "</tr>";
     }
-    fputcsv($output, $headers);
+    echo "</table>";
 
-    // In ra các dòng dữ liệu
-    while ($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_NULLS)) {
-        fputcsv($output, $row);
+    echo "<br><a href='./index-2.html' style='display: inline-block; margin: 20px 0; color: #3498db; text-decoration: none;'>Quay lại phần tìm kiếm</a>";
+    echo "<br><a href='../index.html' style='display: inline-block; margin: 20px 0; color: #3498db; text-decoration: none;'>Quay lại trang chủ</a>";
+
+
+        // Đóng kết nối
+        oci_free_statement($stid);
+        oci_close($conn);
     }
-
-    fclose($output);
-    oci_free_statement($stid);
-    oci_close($conn);
-    exit;
-}
-?>
+    ?>
