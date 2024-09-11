@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo cáo Đặt Cọc</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            text-align: left;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: auto;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        
+        th,
+        td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Nhập Thông Tin Báo Cáo</h1>
+    <form action="index-5.php" method="POST">
+        <label for="tu_ngay">Từ Ngày (dd/mm/yyyy):</label>
+        <input type="text" id="tu_ngay" name="tu_ngay" required>
+        <br><br>
+        <label for="den_ngay">Đến Ngày (dd/mm/yyyy):</label>
+        <input type="text" id="den_ngay" name="den_ngay" required>
+        <br><br>
+        <!-- Nút xem báo cáo -->
+        <button type="submit" name="action" value="view">Xem Báo Cáo</button>
+        <br><br>
+        <!-- Nút tải báo cáo -->
+        <button type="submit" name="action" value="download">Tải Báo Cáo CSV</button>
+    </form>
+    <br><br>
+    <a href="../index.html">Quay lại trang chủ</a>
+</body>
+
+</html>

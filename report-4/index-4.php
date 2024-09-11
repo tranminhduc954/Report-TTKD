@@ -43,6 +43,8 @@
     </form>
 
     <?php
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
     // Thêm autoload của Composer
     require '../vendor/autoload.php';
 
@@ -125,87 +127,84 @@
                 exit;
             }
 
+            // function validateDate($date, $format = 'd/m/Y') {
+            //     $d = DateTime::createFromFormat($format, $date);
+            //     return $d && $d->format($format) === $date;
+            // }
+
+            // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //     if (isset($_POST['tu_ngay']) && isset($_POST['den_ngay'])) {
+            //         $tu_ngay = $_POST['tu_ngay'];
+            //         $den_ngay = $_POST['den_ngay'];
+            
+            //         // Kiểm tra định dạng ngày
+            //         if (!validateDate($tu_ngay) || !validateDate($den_ngay)) {
+            //             echo "Vui lòng nhập ngày đúng định dạng (dd/mm/yyyy).";
+            //             exit;
+            //         }
+            //     }
+            // }
+
             // Kiểm tra nếu người dùng muốn xuất Excel
             if (isset($_POST['export_excel']) && $_POST['export_excel'] == 1) {
                 // Tạo file Excel mới
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
-                // Thiết lập tiêu đề cho các cột
-                $sheet->setCellValue('A1', 'Mã thuê bao');
-                $sheet->setCellValue('B1', 'Cước đặt cọc');
-                $sheet->setCellValue('C1', 'Ngày Đặt Cọc');
-                $sheet->setCellValue('D1', 'Số Tháng');
-                $sheet->setCellValue('E1', 'Tháng Bắt Đầu');
-                $sheet->setCellValue('F1', 'Tháng Kết Thúc');
-                $sheet->setCellValue('G1', 'Chi tiết KM ID');
-                $sheet->setCellValue('H1', 'HDTB ID');
-                $sheet->setCellValue('I1', 'HDKH ID');
-                $sheet->setCellValue('J1', 'Nhân Viên ID');
-                $sheet->setCellValue('K1', 'CTV ID');
-                $sheet->setCellValue('L1', 'Tên Nhân Viên');
-                $sheet->setCellValue('M1', 'Mã Nhân Viên');
-                $sheet->setCellValue('N1', 'Đơn Vị');
-                // Ghi dữ liệu vào Excel
-                $rowNum = 2; // Bắt đầu từ dòng 2 để ghi dữ liệu
+            
+                // Đặt tiêu đề cho các cột
+                $headers = ['Mã thuê bao', 'Cước đặt cọc', 'Ngày đặt cọc', 'Số Tháng', 'Tháng Bắt Đầu', 'Tháng Kết Thúc', 'Chi tiết KM', 'HDTB ID', 'HDKH ID', 'Nhân Viên ID', 'CTV ID', 'Tên Nhân Viên', 'Mã Nhân Viên', 'Đơn Vị'];
+                $sheet->fromArray($headers, NULL, 'A1');
+            
+                // Đổ dữ liệu vào Excel
+                $rowIndex = 2; // Bắt đầu từ hàng thứ 2 để dưới tiêu đề
                 while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
-                    $sheet->setCellValue('A' . $rowNum, $row['MA_TB']);
-                    $sheet->setCellValue('B' . $rowNum, $row['CUOC_DC']);
-                    $sheet->setCellValue('C' . $rowNum, $row['NGAY_DTC']);
-                    $sheet->setCellValue('D' . $rowNum, $row['SO_THANG']);
-                    $sheet->setCellValue('E' . $rowNum, $row['THANG_BD']);
-                    $sheet->setCellValue('F' . $rowNum, $row['THANG_KT']);
-                    $sheet->setCellValue('G' . $rowNum, $row['CHITIETKM_ID']);
-                    $sheet->setCellValue('H' . $rowNum, $row['HDTB_ID']);
-                    $sheet->setCellValue('I' . $rowNum, $row['HDKH_ID']);
-                    $sheet->setCellValue('J' . $rowNum, $row['NHANVIEN_ID']);
-                    $sheet->setCellValue('K' . $rowNum, $row['CTV_ID']);
-                    $sheet->setCellValue('L' . $rowNum, $row['TEN_NV']);
-                    $sheet->setCellValue('M' . $rowNum, $row['MA_NV']);
-                    $sheet->setCellValue('N' . $rowNum, $row['DONVI']);
-                    $rowNum++;
+                    $sheet->fromArray(array_values($row), NULL, 'A' . $rowIndex);
+                    $rowIndex++;
                 }
-                // Xuất file Excel
+            
+                // Tạo file Excel và gửi về cho người dùng
                 $writer = new Xlsx($spreadsheet);
-                $fileName = "bao_cao_dat_coc" . ".xlsx";
-
-                // Ghi file vào php://output
-                ob_end_clean(); // Đảm bảo không có output nào trước đó
-
+                $fileName = 'BaoCao_' . date('Y-m-d_H-i-s') . '.xlsx';
+            
+                ob_end_clean(); // Làm sạch bộ đệm đầu ra
                 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 header('Content-Disposition: attachment; filename="' . $fileName . '"');
+                
+                // Ghi file vào php://output
                 $writer->save('php://output');
-                exit;
+                exit; // Ngăn không cho bất kỳ mã nào khác được thực thi
             }
-            // Nếu không xuất Excel, hiển thị dữ liệu trên trang web (không thay đổi)
-            // Hiển thị dữ liệu
-            echo "<h2>Kết quả Báo Cáo:</h2>";
-            echo "<table>
-                    <tr>
-                        <th>Mã thuê bao</th>
-                        <th>Cước đặt cọc</th>
-                        <th>Ngày Đặt Cọc</th>
-                        <th>Số Tháng</th>
-                        <th>Tháng Bắt Đầu</th>
-                        <th>Tháng Kết Thúc</th>
-                        <th>Chi tiết KM ID</th>
-                        <th>HDTB ID</th>
-                        <th>HDKH ID</th>
-                        <th>Nhân Viên ID</th>
-                        <th>CTV ID</th>
-                        <th>Tên Nhân Viên</th>
-                        <th>Mã Nhân Viên</th>
-                        <th>Đơn Vị</th>
-                    </tr>";
+             else {
+                echo "<h2>Kết quả Báo Cáo:</h2>";
+                echo "<table>
+                        <tr>
+                            <th>Mã thuê bao</th>
+                            <th>Cước đặt cọc</th>
+                            <th>Ngày Đặt Cọc</th>
+                            <th>Số Tháng</th>
+                            <th>Tháng Bắt Đầu</th>
+                            <th>Tháng Kết Thúc</th>
+                            <th>Chi tiết KM ID</th>
+                            <th>HDTB ID</th>
+                            <th>HDKH ID</th>
+                            <th>Nhân Viên ID</th>
+                            <th>CTV ID</th>
+                            <th>Tên Nhân Viên</th>
+                            <th>Mã Nhân Viên</th>
+                            <th>Đơn Vị</th>
+                        </tr>";
 
-            while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
-                echo "<tr>";
-                foreach ($row as $item) {
-                    echo "<td>" . htmlspecialchars($item, ENT_QUOTES) . "</td>";
+                while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
+                    echo "<tr>";
+                    foreach ($row as $item) {
+                        echo "<td>" . htmlspecialchars($item, ENT_QUOTES) . "</td>";
+                    }
+                    echo "</tr>";
                 }
-                echo "</tr>";
-            }
-            echo "</table>";
+                echo "</table>";
+                
 
+            }
             // Đóng kết nối
             oci_free_statement($stid);
             oci_close($conn);
@@ -213,6 +212,7 @@
             echo "Vui lòng nhập ngày!";
         }
     }
+    echo "<br><a href='../index.html' style='display: inline-block; margin: 20px 0; color: #3498db; text-decoration: none;'>Quay lại trang chủ</a>";
     ?>
 
 </body>

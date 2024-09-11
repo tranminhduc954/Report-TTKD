@@ -3,7 +3,7 @@
         'name' => '__root__',
         'pretty_version' => 'dev-tmduc',
         'version' => 'dev-tmduc',
-        'reference' => '52d22d9e9cbc1ea505178ac5cbf5a07aef45e4b6',
+        'reference' => '6b127e1434157483ec612d3b19b1150109cfd1af',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         '__root__' => array(
             'pretty_version' => 'dev-tmduc',
             'version' => 'dev-tmduc',
-            'reference' => '52d22d9e9cbc1ea505178ac5cbf5a07aef45e4b6',
+            'reference' => '6b127e1434157483ec612d3b19b1150109cfd1af',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
