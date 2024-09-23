@@ -39,7 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 AND dc.chitietkm_id = km.chitietkm_id
                 AND NVL(kh.ctv_id, kh.nhanviengt_id) = nv.nhanvien_id(+)
                 AND dc.ngay_cn BETWEEN TO_DATE(:tu_ngay, 'DD/MM/YYYY') 
-                AND TO_DATE(:den_ngay, 'DD/MM/YYYY')";
+                AND TO_DATE(:den_ngay, 'DD/MM/YYYY')
+                AND dc.chitietkm_id IN (13827,34330,34314,34299,34299,13177,32730,30893,
+                30772,34299,30882,32732,32730,30770,30893,30772,30772,30893,30770,30882,
+                32730,32732,35410,15162,15173,32730,32732,30772,30893,35129,35122,30893,
+                30772,30682,32650,15162,15173,30693,30893,30772,34299,30882,30770,34314,
+                34330,32730,32732,32731,32730,32732,32730,34299,15162,15173,30882,38720,
+                34330,34314,30882,33820,38719,15162,33820,30882,15173,15162,30772,30893,
+                32650,38713,15185,15165,15162,15173,32635,32650,35129,35122,34334,34313,
+                34310,35116,35123,34322,15162,15173,38719,35129,35122,32730,32732,15162,
+                15173,30770,30882,38721,35122,35129,15162,15173,35123,35116,15162,34299,
+                35134,35116,32732,32730,30882,30770,30882,33820,35432,35120,35123,35116,
+                30882,30770,30760,35123,35122,35129,32638,32730,32732)";
 
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ':tu_ngay', $tu_ngay);
@@ -82,6 +93,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         background-color: #f4f4f4;
                     }
                 </style>";
+            
+            // Quay lại phần tìm kiếm
+            echo '<form action="index.html" method="get">';
+            echo '<button type="submit">Quay Lại</button>';
+            echo '</form>';
+
+            // Nút tải file
+            echo '<form action="index-5.php" method="POST">';
+            echo '<input type="hidden" name="tu_ngay" value="' . htmlspecialchars($tu_ngay) . '">';
+            echo '<input type="hidden" name="den_ngay" value="' . htmlspecialchars($den_ngay) . '">';
+            echo '<button type="submit" name="action" value="download">Tải Báo Cáo CSV</button>';
+            echo '</form>';
+
             echo "<table>";
             echo "<thead>
                     <tr>
