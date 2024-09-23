@@ -37,13 +37,31 @@
     </style>
 
     <!-- HTML -->
-    <h1>Báo cáo tìm kiếm phát triển SmartCA PS0</h1>
+    <h1>Số liệu phát triển SmartCA PS0</h1>
     <form action="query-7.php" method="post">
         <label for="">Ngày bắt đầu</label>
-        <input type="text" placeholder="DD/MM/YYYY" id="ngay_bd" name="ngay_bd" required>
+        <input type="text" placeholder="ví dụ 01/01/2024" id="ngay_bd" name="ngay_bd" required>
         <br><br>
         <label for="">Ngày kết thúc</label>
-        <input type="text" placeholder="DD/MM/YYYY" id="ngay_kt" name="ngay_kt" required>
+        <input type="text" placeholder="ví dụ 31/01/2024" id="ngay_kt" name="ngay_kt" required>
+        <br><br>
+        <!-- Chọn đơn vị -->
+        <label for="don_vi">Chọn đơn vị</label>
+        <select id="don_vi" name="don_vi" required>
+            <option value="">Chọn đơn vị</option>
+            <option value="Phòng bán hàng Cao Phong">Phòng bán hàng Cao Phong</option>
+            <option value="Phòng bán hàng Đà Bắc">Phòng bán hàng Đà Bắc</option>
+            <option value="Phòng bán hàng Kim Bôi">Phòng bán hàng Kim Bôi</option>
+            <option value="Phòng bán hàng Lạc Sơn">Phòng bán hàng Lạc Sơn</option>
+            <option value="Phòng bán hàng Lạc Thủy">Phòng bán hàng Lạc Thủy</option>
+            <option value="Phòng bán hàng Lương Sơn">Phòng bán hàng Lương Sơn</option>
+            <option value="Phòng bán hàng Mai Châu">Phòng bán hàng Mai Châu</option>
+            <option value="Phòng bán hàng Tân Lạc">Phòng bán hàng Tân Lạc</option>
+            <option value="Phòng bán hàng Thành Phố">Phòng bán hàng Thành Phố</option>
+            <option value="Phòng bán hàng Yên Thủy">Phòng bán hàng Yên Thủy</option>
+            <option value="Phòng Khách hàng Tổ chức - Doanh nghiệp">Phòng Khách hàng Tổ chức - Doanh nghiệp</option>
+            <!-- Thêm các đơn vị khác ở đây -->
+        </select>
         <!-- Nút xem báo cáo -->
         <br><br>
         <button type="submit" name="action" value="view">Xem Báo Cáo</button>

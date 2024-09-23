@@ -7,10 +7,11 @@ ob_start();
 
 // Kiểm tra nếu form được gửi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['ngay_bd']) && ($_POST['ngay_kt'])) {
+    if (isset($_POST['ngay_bd']) && ($_POST['ngay_kt']) && ($_POST['don_vi'])) {
        // Lấy dữ liệu từ form
        $ngay_bd = $_POST['ngay_bd'];
        $ngay_kt = $_POST['ngay_kt'];
+       $don_vi = $_POST['don_vi'];
 
        // Kết nối đến Oracle Database
        $connection_string = "(DESCRIPTION =
@@ -56,10 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     and (hdtb.loaitb_id = 318 or (hdtb.loaitb_id = 288 and hdtb.mucuoctb_id = 22198))
                     and trunc(hdkh.ngay_yc) between TO_DATE(:ngay_bd, 'DD/MM/YYYY') and to_date(:ngay_kt, 'DD/MM/YYYY')";
 
+        // Thêm điều kiện đơn vị
+        if ($don_vi) {
+            $sql .= " and dv.ten_dv = :don_vi";
+        }
+
         // Thực thi truy vấn
         $stid = oci_parse($conn, $sql);
+
+        // Gán tham số vào truy vấn
         oci_bind_by_name($stid, ':ngay_bd', $ngay_bd);
         oci_bind_by_name($stid, ':ngay_kt', $ngay_kt);
+        if ($don_vi) {
+            oci_bind_by_name($stid, ':don_vi', $don_vi);
+        }
+
+        // Trả kết quả truy vấn
         $result = oci_execute($stid);
 
         if (!$result) {
