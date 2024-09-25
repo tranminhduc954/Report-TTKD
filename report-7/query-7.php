@@ -15,14 +15,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
        // Kết nối đến Oracle Database
        $connection_string = "(DESCRIPTION =
-       (ADDRESS = (PROTOCOL = TCP)(HOST = 10.13.32.69)(PORT = 1521))
+       (ADDRESS = (PROTOCOL = TCP)(HOST = 10.165.33.28)(PORT = 1521))
        (CONNECT_DATA =
        (SERVER = DEDICATED)
-       (SERVICE_NAME = dhnvhbh)
+       (SERVICE_NAME = PDB_ONEBSS)
        )
        )";
     
-       $conn = oci_connect('ductm_hbh', 'a123', $connection_string);
+       $conn = oci_connect('DULIEU_HBH', 'OneBss_HBH_1591', $connection_string);
         if (!$conn) {
             $e = oci_error();
             echo "Failed to connect to Oracle: " . $e['message'];
@@ -30,21 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Câu SQL truy vấn
-        $sql = "select 'PS0' loai, dv.ten_dv, ltb.loaihinh_tb,
+        $sql = "select 'PS0' loai, dv.donvi_id, dv.ten_dv, ltb.loaihinh_tb,
                     hdkh.ngay_yc, hdtb.ngay_ht, hdtb.ma_tb, hdtb.tthd_id, hdtb.ten_tb, hdtb.diachi_tb, dt.doanh_thu,
                     nd.ma_nd user_lhd, nv.ten_nv nguoi_lhd, nv_ctv.ma_nv ma_nv_tu_van, nv_ctv.ten_nv nhan_vien_tu_van
-                from css.hd_khachhang hdkh,
-                    css.hd_thuebao hdtb,
-                    css.hd_thanhtoan hdtt,
-                    admin.v_nguoidung@dataguard nd,
-                    admin.v_nhanvien@dataguard nv,
-                    admin.v_nhanvien@dataguard nv_ctv,
+                from css.v_hd_khachhang hdkh,
+                    css.v_hd_thuebao hdtb,
+                    css.v_hd_thanhtoan hdtt,
+                    admin.v_nguoidung nd,
+                    admin.v_nhanvien nv,
+                    admin.v_nhanvien nv_ctv,
                     (select x.ma_tb, sum(y.tien) doanh_thu
-                    from css.hd_thuebao x, css.ct_phieu_tt y
+                    from css.v_hd_thuebao x, css.v_ct_phieutt y
                     where x.hdtb_id = y.hdtb_id and y.khoanmuctt_id <> 5
                     group by x.ma_tb) dt,
-                    admin.v_donvi@dataguard dv,
-                    css.loaihinh_tb@dataguard ltb
+                    admin.v_donvi dv,
+                    css.loaihinh_tb ltb
                 where hdkh.hdkh_id = hdtb.hdkh_id
                     and hdtb.loaitb_id = ltb.loaitb_id
                     and hdkh.nguoi_cn = nd.ma_nd(+)
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Thêm điều kiện đơn vị
         if ($don_vi) {
-            $sql .= " and dv.ten_dv = :don_vi";
+            $sql .= " and dv.donvi_id = :don_vi";
         }
 
         // Thực thi truy vấn
@@ -129,6 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<thead>
                     <tr>
                         <th>Loại</th>
+                        <th>Đơn vị ID</th>
                         <th>Tên đơn vị</th>
                         <th>Loại hình TB</th>
                         <th>Ngày yêu cầu</th>
