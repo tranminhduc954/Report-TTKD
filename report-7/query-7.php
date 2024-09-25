@@ -7,7 +7,7 @@ ob_start();
 
 // Kiểm tra nếu form được gửi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['ngay_bd']) && ($_POST['ngay_kt']) && ($_POST['don_vi'])) {
+    if (isset($_POST['ngay_bd'], $_POST['ngay_kt'], $_POST['don_vi'])) {
        // Lấy dữ liệu từ form
        $ngay_bd = $_POST['ngay_bd'];
        $ngay_kt = $_POST['ngay_kt'];
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     and trunc(hdkh.ngay_yc) between TO_DATE(:ngay_bd, 'DD/MM/YYYY') and to_date(:ngay_kt, 'DD/MM/YYYY')";
 
         // Thêm điều kiện đơn vị
-        if ($don_vi) {
+        if (!empty($don_vi)) {
             $sql .= " and dv.donvi_id = :don_vi";
         }
 
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Gán tham số vào truy vấn
         oci_bind_by_name($stid, ':ngay_bd', $ngay_bd);
         oci_bind_by_name($stid, ':ngay_kt', $ngay_kt);
-        if ($don_vi) {
+        if (!empty($don_vi)) {
             oci_bind_by_name($stid, ':don_vi', $don_vi);
         }
 
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "</tbody>";
             echo "</table>";
 
-        } elseif ($_POST['action'] == 'download') { // Hoặc chọn tải
+        } elseif (isset($_POST['action']) && $_POST['action'] == 'download') { // Hoặc chọn tải
             // Đặt tên file CSV tải xuống
             $filename = "bao_cao_smart_ps0" . date('Ymd') . ".csv";
             header('Content-Type: text/csv');
