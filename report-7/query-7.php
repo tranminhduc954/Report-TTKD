@@ -30,37 +30,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Câu SQL truy vấn
-        $sql = "select 'PS0' loai, dv.donvi_id, dv.ten_dv, ltb.loaihinh_tb,
-                    hdkh.ngay_yc, hdtb.ngay_ht, hdtb.ma_tb, hdtb.tthd_id, hdtb.ten_tb, hdtb.diachi_tb, dt.doanh_thu,
-                    nd.ma_nd user_lhd, nv.ten_nv nguoi_lhd, nv_ctv.ma_nv ma_nv_tu_van, nv_ctv.ten_nv nhan_vien_tu_van
+        $sql = "select case when hdkh.nguoi_cn = 'tranminhduc.hbh' and (hdtb.loaitb_id = 318 or (hdtb.loaitb_id = 288 and hdtb.mucuoctb_id = 22198)) then 'PS0' 
+                            when lower(mc.MUCCUOC) like '%edu%' then 'Giáo dục'
+                            when lower(mc.MUCCUOC) like '%y tế%' then 'Y tế'
+                            when lower(mc.MUCCUOC) like '%nhân viên%' then 'Nhân viên'
+                    else 'Trọn gói khác' end loai, 
+                    case when hdkh.nguoi_cn = 'tranminhduc.hbh' and (hdtb.loaitb_id = 318 or (hdtb.loaitb_id = 288 and hdtb.mucuoctb_id = 22198)) 
+                        then 'KH đăng ký qua SmartCA' else hdkh.nguoi_cn end user_lhd,
+                    case when hdkh.nguoi_cn = 'tranminhduc.hbh' and (hdtb.loaitb_id = 318 or (hdtb.loaitb_id = 288 and hdtb.mucuoctb_id = 22198)) 
+                        then 'KH đăng ký qua SmartCA' else nv.ten_nv end nguoi_lhd,
+                    nv_ctv.ma_nv ma_nv_tu_van, nv_ctv.ten_nv nhan_vien_tu_van,
+                    dv.TEN_DV donvi_lhd,  dvql.TEN_DV donvi_ql,
+                    ltb.loaitb_id, ltb.loaihinh_tb, mc.MUCUOCTB_ID, mc.MUCCUOC,
+                    hdkh.ngay_yc, hdtb.ma_tb, hdtb.ngay_ht, tthd.trangthai_hd, 
+                    hdkh.SO_GT, hdtb.ten_tb, hdtb.diachi_tb
                 from css.v_hd_khachhang hdkh,
                     css.v_hd_thuebao hdtb,
                     css.v_hd_thanhtoan hdtt,
                     admin.v_nguoidung nd,
                     admin.v_nhanvien nv,
                     admin.v_nhanvien nv_ctv,
-                    (select x.ma_tb, sum(y.tien) doanh_thu
-                    from css.v_hd_thuebao x, css.v_ct_phieutt y
-                    where x.hdtb_id = y.hdtb_id and y.khoanmuctt_id <> 5
-                    group by x.ma_tb) dt,
                     admin.v_donvi dv,
-                    css.loaihinh_tb ltb
-                where hdkh.hdkh_id = hdtb.hdkh_id
+                    admin.v_donvi dvql,
+                    css.loaihinh_tb ltb,
+                    css.v_muccuoc_tb mc,
+                    css.trangthai_hd tthd
+                where hdkh.hdkh_id = hdtb.hdkh_id 
                     and hdtb.loaitb_id = ltb.loaitb_id
+                    and hdtb.MUCUOCTB_ID = mc.MUCUOCTB_ID
+                    and hdtb.TTHD_ID = tthd.tthd_id
                     and hdkh.nguoi_cn = nd.ma_nd(+)
                     and nd.nhanvien_id = nv.nhanvien_id(+)
                     and hdkh.ctv_id = nv_ctv.nhanvien_id(+)
-                    and hdtb.ma_tb = dt.ma_tb(+)
                     and hdkh.loaihd_id = 1
-                    and decode(hdkh.nguoi_cn , 'tranminhduc.hbh', hdtt.donvi_id, nvl(nv_ctv.donvi_id, nv.donvi_id)) = dv.donvi_id
+                    and hdtt.DONVI_ID = dvql.DONVI_ID
+                    and nv_ctv.DONVI_ID = dv.DONVI_ID(+)
                     and hdtb.hdtt_id = hdtt.hdtt_id
-                    and (hdtb.loaitb_id = 318 or (hdtb.loaitb_id = 288 and hdtb.mucuoctb_id = 22198))
-                    and trunc(hdkh.ngay_yc) between TO_DATE(:ngay_bd, 'DD/MM/YYYY') and to_date(:ngay_kt, 'DD/MM/YYYY')";
+                    and hdtb.loaitb_id in (318, 288)
+                    and hdkh.ngay_yc between to_date(:ngay_bd, 'dd/mm/rrrr') and to_date(:ngay_kt || ' 23:59:50', 'dd/mm/rrrr hh24:mi:ss')
+                    and (decode(:don_vi, 0, 0, nv_ctv.DONVI_ID) = :don_vi or decode(:don_vi, 0, 0, hdtt.DONVI_ID) = :don_vi)--311290
+                order by dvql.TEN_DV, dv.TEN_DV";
 
         // Thêm điều kiện đơn vị
-        if (!empty($don_vi)) {
-            $sql .= " and dv.donvi_id = :don_vi";
-        }
+        // if (!empty($don_vi)) {
+        //     $sql .= " and dv.donvi_id = :don_vi";
+        // }
 
         // Thực thi truy vấn
         $stid = oci_parse($conn, $sql);
@@ -68,9 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Gán tham số vào truy vấn
         oci_bind_by_name($stid, ':ngay_bd', $ngay_bd);
         oci_bind_by_name($stid, ':ngay_kt', $ngay_kt);
-        if (!empty($don_vi)) {
-            oci_bind_by_name($stid, ':don_vi', $don_vi);
-        }
+        oci_bind_by_name($stid, ':don_vi', $don_vi);
+        // if (!empty($don_vi)) {
+        //     oci_bind_by_name($stid, ':don_vi', $don_vi);
+        // }
 
         // Trả kết quả truy vấn
         $result = oci_execute($stid);
@@ -84,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Kiểm tra hành động người dùng
         if (isset($_POST['action']) && $_POST['action'] == 'view') { // Chọn xem báo cáo trực tiếp
             // In báo cáo ra trình duyệt
-            echo "<h2>Danh sách thuê bao SmartCA PS0 phát triển mới</h2>";
+            echo "<h2>Danh sách thuê bao SmartCA phát triển mới</h2>";
             echo "<style>
                     table {
                         border-collapse: collapse;
@@ -129,20 +144,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<thead>
                     <tr>
                         <th>Loại</th>
-                        <th>Đơn vị ID</th>
-                        <th>Tên đơn vị</th>
+                        <th>User Lập hợp đồng</th>
+                        <th>Người lập hợp đồng</th>
+                        <th>Mã Nhân viên TV</th>
+                        <th>Nhân viên tư vấn</th>
+                        <th>Đơn vị LHĐ</th>
+                        <th>Đơn vị quản lý</th>
+                        <th>Loại thuê bao ID</th>
                         <th>Loại hình TB</th>
-                        <th>Ngày yêu cầu</th>
-                        <th>Ngày hoàn thiện</th>
+                        <th>Mức cước thuê bao ID</th>
+                        <th>Mức cước</th>
+                        <th>Ngày bắt đầu</th>
                         <th>Mã thuê bao</th>
-                        <th>Trạng thái ID HĐ</th>
+                        <th>Ngày hoàn thiện</th>
+                        <th>Trạng thái HĐ</th>
+                        <th>Số GT</th>
                         <th>Tên thuê bao</th>
                         <th>Địa chỉ thuê bao</th>
-                        <th>Doanh thu</th>
-                        <th>User Admin</th>
-                        <th>Tên Admin</th>
-                        <th>Mã NVGT</th>
-                        <th>Người phát triển</th>
                     </tr>
                 </thead>";
             echo "<tbody>";
@@ -166,7 +184,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $output = fopen('php://output', 'w');
 
             // Các dòng tiêu đề
-            fputcsv($output, ['LOAI', 'TEN_DV', 'LOAIHINH_TB', 'NGAY_YC', 'NGAY_HT', 'MA_TB', 'TTHD_ID', 'TEN_TB', 'DIACHI_TB', 'DOANH_THU' , 'USER_LHD', 'NGUOI_LHD', 'MA_NV_TU_VAN', 'NHAN_VIEN_TU_VAN']);
+            fputcsv($output, ['LOAI', 'USER_LHD', 'NGUOI_LHD', 'MA_NVGT', 'NHANVIEN_GT', 'DONVI_LHD', 'DONVI_QL', 
+            'LOAITB_ID', 'LOAIHINH_TB', 'MUCCUOCTB_ID', 'MUCCUOC' ,'NGAY_YC', 'MA_TB', 'NGAY_HT', 
+            'TRANGTHAI_HD', 'SO_GT', 'TEN_TB', 'DIACHI_TB']);
 
             // Ghi các dòng dữ liệu từ truy vấn
             while ($row = oci_fetch_assoc($stid)) {
