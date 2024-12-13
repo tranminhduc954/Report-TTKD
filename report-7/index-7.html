@@ -5,46 +5,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo cáo phát triển SmartCA PS0</title>
+    <style>
+        /* Toàn trang */
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Form chính */
+        
+        form {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        /* Tiêu đề */
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        /* Nhãn */
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            text-align: left;
+        }
+        /* Input */
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        /* Nút bấm */
+        
+        button {
+            padding: 12px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        /* Liên kết quay lại */
+        
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- CSS -->
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            color: #333;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            text-align: left;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            margin: auto;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-        
-        th,
-        td {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: #f4f4f4;
-        }
-    </style>
-
     <!-- HTML -->
-    <h1>Số liệu phát triển SmartCA (PS0 + Gói trả phí)</h1>
     <form action="query-7.php" method="post">
+        <h1>Số liệu phát triển SmartCA (PS0 + Gói trả phí)</h1>
         <label for="">Ngày bắt đầu</label>
         <input type="text" placeholder="ví dụ 01/01/2024" id="ngay_bd" name="ngay_bd" required>
-        <br><br>
+        <br>
         <label for="">Ngày kết thúc</label>
         <input type="text" placeholder="ví dụ 31/01/2024" id="ngay_kt" name="ngay_kt" required>
-        <br><br>
+        <br>
         <!-- Chọn đơn vị -->
         <label for="don_vi">Chọn đơn vị</label>
         <select id="don_vi" name="don_vi" required>
@@ -63,13 +118,13 @@
             <!-- Thêm các đơn vị khác ở đây -->
         </select>
         <!-- Nút xem báo cáo -->
-        <br><br>
+        <br>
         <button type="submit" name="action" value="view">Xem Báo Cáo</button>
         <!-- Nút tải báo cáo -->
         <button type="submit" name="action" value="download">Tải Báo Cáo CSV</button>
+        <br>
+        <a href="../index.html">Quay lại trang chủ</a>
     </form>
-    <br><br>
-    <a href="../index.html">Quay lại trang chủ</a>
 </body>
 
 </html>

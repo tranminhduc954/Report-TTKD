@@ -4,7 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Báo cáo TTKD HBH - Phòng Điều hành Nghiệp vụ</title>
+    <style>
+        /* Reset mặc định */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* Toàn bộ trang */
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #e9eff1);
+            color: #333;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        /* Tiêu đề */
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        /* Container cho danh sách báo cáo */
+        
+        .report-list {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .report-list:hover {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        /* Các liên kết báo cáo */
+        
+        .report-list a {
+            display: block;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #2c3e50;
+            text-decoration: none;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        /* Hover hiệu ứng */
+        
+        .report-list a:hover {
+            background: #3498db;
+            color: #fff;
+            border-color: #2980b9;
+            transform: translateY(-3px);
+        }
+        /* Ẩn báo cáo 5 */
+        
+        .report-hidden {
+            display: none;
+        }
+        /* Khoảng cách giữa các báo cáo */
+        
+        .report-list a:not(:last-child) {
+            margin-bottom: 12px;
+        }
+        /* Footer */
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5YP261YRKJ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -19,21 +124,19 @@
 </head>
 
 <body>
-    <a href="./report-1/index-1.html">Báo cáo 1: Tìm kiếm lịch sử đặt cọc</a>
-    <br>
-    <br>
-    <a href="./report-2/index-2.html">Báo cáo 2: Tìm kiếm khuyến mại</a>
-    <br>
-    <br>
-    <div hidden>
-        <a href="./report-5/index.html">Báo cáo 5: Tra cứu đóng trước cước (TPO)</a>
+    <div>
+        <a href="./report-1/index-1.html">Báo cáo 1: Tìm kiếm lịch sử đặt cọc</a>
+        <br>
+        <a href="./report-2/index-2.html">Báo cáo 2: Tìm kiếm khuyến mại</a>
+        <br>
+        <div hidden>
+            <a href="./report-5/index.html">Báo cáo 5: Tra cứu đóng trước cước (TPO)</a>
+        </div>
+        <br>
+        <a href="./report-6/index-6.html">Báo cáo 6: Tìm kiếm hợp đồng làm dở</a>
+        <br>
+        <a href="./report-7/index-7.html">Báo cáo 7: Báo cáo phát triển mới SmartCA PS0</a>
     </div>
-    <br>
-    <br>
-    <a href="./report-6/index-6.html">Báo cáo 6: Tìm kiếm hợp đồng làm dở</a>
-    <br>
-    <br>
-    <a href="./report-7/index-7.html">Báo cáo 7: Báo cáo phát triển mới SmartCA PS0</a>
 </body>
 
 </html>

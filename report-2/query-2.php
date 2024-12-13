@@ -1,6 +1,7 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ma_tb = $_POST['ma_tb'];
+    $huong_dc = $_POST['huong_dc'];
 
     $host = "10.165.33.28";
     $port = "1521";
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     )";
 
     $ma_tb = $_POST['ma_tb'];
+    $huong_dc = $_POST['huong_dc'];
 
     $conn = oci_connect($username, $password, $connection_string);
 
@@ -53,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   AND km_goi.goi_id = goi.goi_id(+)
                   AND ctkm.tien_td <> 0
                   AND dbtb.ma_tb = :p_ma_tb
+                  AND ctkm.huong_dc = :p_huong_dc
         )
         SELECT * FROM (
             SELECT ct.* FROM chi_tiet ct, css.v_bd_goi_dadv goi
@@ -60,14 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             UNION SELECT * FROM chi_tiet WHERE goi_id IS NULL
         )
         ORDER BY goi_id, nhom_datcoc, ten_km, so_thang_dtc";
-        
-        $stid = oci_parse($conn, $query);
-        oci_bind_by_name($stid, ':p_ma_tb', $ma_tb);
 
-        // Thực thi truy vấn
-        oci_execute($stid);
+    $stid = oci_parse($conn, $query);
+    oci_bind_by_name($stid, ':p_ma_tb', $ma_tb);
+    oci_bind_by_name($stid, ':p_huong_dc', $huong_dc);
 
-        echo "<style>
+    // Thực thi truy vấn
+    oci_execute($stid);
+
+    echo "<style>
         table {
             border-collapse: collapse;
             width: 100%;
@@ -118,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
         echo "<tr>";
         foreach ($row as $item) {
-            echo "<td>" . htmlspecialchars($item, ENT_QUOTES) . "</td>";
+            echo "<td>" . (empty($item) ? "Không có dữ liệu" : htmlspecialchars($item, ENT_QUOTES)) . "</td>";
         }
         echo "</tr>";
     }
@@ -128,8 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "<br><a href='../index.html' style='display: inline-block; margin: 20px 0; color: #3498db; text-decoration: none;'>Quay lại trang chủ</a>";
 
 
-        // Đóng kết nối
-        oci_free_statement($stid);
-        oci_close($conn);
-    }
-    ?>
+    // Đóng kết nối
+    oci_free_statement($stid);
+    oci_close($conn);
+}

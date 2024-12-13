@@ -5,20 +5,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xuất Báo Cáo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        
+        form {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        form div {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:active {
+            background-color: #1c6fa0;
+        }
+        
+        a {
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
     <link rel="stylesheet" href="./main-2.css">
 </head>
 
 <body>
-    <h1>Tìm báo cáo</h1>
+
     <form action="query-2.php" method="post">
-        <label for="ma_tb">Nhập mã thuê bao:</label>
-        <input type="text" id="ma_tb" name="ma_tb" required>
+        <h1>Tìm khuyến mại theo số tháng</h1>
+        <div>
+            <label for="ma_tb" aria-placeholder="Nhập mã thuê bao BRCĐ">Nhập mã thuê bao:</label>
+            <input type="text" id="ma_tb" name="ma_tb" required>
+            <br>
+            <label for="huong_dc" aria-placeholder="Ví dụ: 12">Nhập số tháng:</label>
+            <input type="text" id="huong_dc" name="huong_dc" required>
+        </div>
         <button type="submit">Xuất Báo Cáo</button>
         <button type="submit" formaction="export2.php" name="action" value="export">Xuất ra Excel (CSV)</button>
+        <br>
+        <a href="../index.html">Quay lại trang chủ</a>
     </form>
 
-    <br>
-    <a href="../index.html">Quay lại trang chủ</a>
+
 </body>
 
 </html>

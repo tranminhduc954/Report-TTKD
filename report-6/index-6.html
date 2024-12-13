@@ -5,50 +5,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Báo cáo hợp đồng làm dở</title>
+    <style>
+        /* Định dạng toàn trang */
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Định dạng form */
+        
+        form {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        /* Tiêu đề */
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        /* Nhãn và ô nhập liệu */
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-align: left;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        /* Các nút bấm */
+        
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #ffffff;
+            background-color: #3498db;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        /* Liên kết quay lại */
+        
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- CSS -->
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            color: #333;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            text-align: left;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            margin: auto;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-        
-        th,
-        td {
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-        }
-        
-        th {
-            background-color: #f4f4f4;
-        }
-    </style>
-
     <!-- HTML -->
-    <h1>Báo cáo tìm kiếm hợp đồng làm dở</h1>
     <form action="query-6.php" method="post">
+        <h1>Báo cáo tìm kiếm hợp đồng làm dở</h1>
         <label for="">Nhập user Onebss</label>
         <input type="text" placeholder="User lập hợp đồng" id="nguoi_cn" name="nguoi_cn" required>
         <!-- Nút xem báo cáo -->
-        <br><br>
+        <br>
         <button type="submit" name="action" value="view">Xem Báo Cáo</button>
         <!-- Nút tải báo cáo -->
         <button type="submit" name="action" value="download">Tải Báo Cáo CSV</button>
+        <br>
+        <a href="../index.html">Quay lại trang chủ</a>
     </form>
-    <br><br>
-    <a href="../index.html">Quay lại trang chủ</a>
 </body>
 
 </html>

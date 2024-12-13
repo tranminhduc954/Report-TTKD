@@ -7,6 +7,7 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Kết nối đến Oracle Database
         $ma_tb = $_POST['ma_tb'];
+        $huong_dc = $_POST['huong_dc'];
 
         $host = "10.165.33.28";
         $port = "1521";
@@ -23,6 +24,7 @@
         )";
 
         $ma_tb = $_POST['ma_tb'];
+        $huong_dc = $_POST['huong_dc'];
 
         $conn = oci_connect($username, $password, $connection_string);
         if (!$conn) {
@@ -32,6 +34,7 @@
         }
     
         $ma_tb = $_POST['ma_tb'];
+        $huong_dc = $_POST['huong_dc'];
         $sql = "
         WITH chi_tiet AS (
             SELECT dbtb.thuebao_id, dbtb.ma_tb, td.thuonghieu, goi.goi_id, goi.ten_goi, 
@@ -59,6 +62,7 @@
                   AND km_goi.goi_id = goi.goi_id(+)
                   AND ctkm.tien_td <> 0
                   AND dbtb.ma_tb = :p_ma_tb
+                  AND ctkm.huong_dc = :p_huong_dc
         )
         SELECT * FROM (
             SELECT ct.* FROM chi_tiet ct, css.v_bd_goi_dadv goi
@@ -69,6 +73,7 @@
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ':p_ma_tb', $ma_tb);
+        oci_bind_by_name($stid, ':p_huong_dc', $huong_dc);
         oci_execute($stid);
     
         if ($_POST['action'] === 'export') {
