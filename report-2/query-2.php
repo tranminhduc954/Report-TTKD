@@ -118,14 +118,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th>Người CN</th>
                 <th>Ngày CN</th>
             </tr>";
-
     while (($row = oci_fetch_array($stid, OCI_ASSOC)) != false) {
         echo "<tr>";
-        foreach ($row as $item) {
-            echo "<td>" . (empty($item) ? "Không có dữ liệu" : htmlspecialchars($item, ENT_QUOTES)) . "</td>";
-        }
+        echo "<td>" . (empty($row['THUEBAO_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['THUEBAO_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['MA_TB']) ? "Không có dữ liệu" : htmlspecialchars($row['MA_TB'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['THUONGHIEU']) ? "Không có dữ liệu" : htmlspecialchars($row['THUONGHIEU'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['GOI_ID']) ? " " : htmlspecialchars($row['GOI_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['TEN_GOI']) ? " " : htmlspecialchars($row['TEN_GOI'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['NHOM_DATCOC']) ? "Không có dữ liệu" : htmlspecialchars($row['NHOM_DATCOC'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['KHUYENMAI_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['KHUYENMAI_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['TEN_KM']) ? "Không có dữ liệu" : htmlspecialchars($row['TEN_KM'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['CHITIETKM_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['CHITIETKM_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['TEN_CTKM']) ? "Không có dữ liệu" : htmlspecialchars($row['TEN_CTKM'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['SO_THANG_DTC']) ? "Không có dữ liệu" : htmlspecialchars($row['SO_THANG_DTC'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['DATCOC_CSD']) ? "Không có dữ liệu" : htmlspecialchars($row['DATCOC_CSD'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['TIEN_TD']) ? "Không có dữ liệu" : htmlspecialchars($row['TIEN_TD'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['NGUOI_CN']) ? "Không có dữ liệu" : htmlspecialchars($row['NGUOI_CN'], ENT_QUOTES)) . "</td>";
+        echo "<td>" . (empty($row['NGAY_CN']) ? "Không có dữ liệu" : htmlspecialchars($row['NGAY_CN'], ENT_QUOTES)) . "</td>";
         echo "</tr>";
     }
+
     echo "</table>";
 
     echo "<br><a href='./index-2.html' style='display: inline-block; margin: 20px 0; color: #3498db; text-decoration: none;'>Quay lại phần tìm kiếm</a>";
