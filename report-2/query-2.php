@@ -99,7 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>";
 
-    echo "<h2 style='text-align: center;'>Kết quả Báo Cáo:</h2>";
+    echo "<h2 style='text-align: center;'>Các khuyến mại được gán cho thuê bao: {$ma_tb}</h2>";
+    echo "<h2 style='text-align: center;'>Người dùng chọn đúng các thông tin ở cột tô màu vàng để tìm được khuyến mại trên App Employee hoặc OneBss</h2>";
     echo "<table>
             <tr>
                 <th>Thuebao ID</th>
@@ -107,13 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th>Thương Hiệu</th>
                 <th>Gói ID</th>
                 <th>Tên Gói</th>
-                <th>Nhóm Đặt Cọc</th>
-                <th>Khuyến Mãi ID</th>
+                <th style='background-color: #ffeb3b; font-weight: bold; color: red;'>Nhóm Đặt Cọc</th>
+                <th style='background-color: #ffeb3b; font-weight: bold; color: red;'>Khuyến Mãi ID</th>
                 <th>Tên KM</th>
-                <th>Chi Tiết KM ID</th>
+                <th style='background-color: #ffeb3b; font-weight: bold; color: red;'>Chi Tiết KM ID</th>
                 <th>Tên Chi Tiết KM</th>
-                <th>Số Tháng Đặt Cọc</th>
-                <th>Đặt Cọc CSD</th>
+                <th style='background-color: #ffeb3b; font-weight: bold; color: red;'>Số Tháng Đặt Cọc</th>
+                <th style='background-color: #ffeb3b; font-weight: bold; color: red;'>Đặt Cọc CSD</th>
                 <th>Tiền TĐ</th>
                 <th>Người CN</th>
                 <th>Ngày CN</th>
@@ -125,13 +126,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<td>" . (empty($row['THUONGHIEU']) ? "Không có dữ liệu" : htmlspecialchars($row['THUONGHIEU'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['GOI_ID']) ? " " : htmlspecialchars($row['GOI_ID'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['TEN_GOI']) ? " " : htmlspecialchars($row['TEN_GOI'], ENT_QUOTES)) . "</td>";
-        echo "<td>" . (empty($row['NHOM_DATCOC']) ? "Không có dữ liệu" : htmlspecialchars($row['NHOM_DATCOC'], ENT_QUOTES)) . "</td>";
-        echo "<td>" . (empty($row['KHUYENMAI_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['KHUYENMAI_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td style='font-weight: bold; color: red;'>" . (empty($row['NHOM_DATCOC']) ? "Không có dữ liệu" : htmlspecialchars($row['NHOM_DATCOC'], ENT_QUOTES)) . "</td>";
+        echo "<td style='font-weight: bold; color: red;'>" . (empty($row['KHUYENMAI_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['KHUYENMAI_ID'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['TEN_KM']) ? "Không có dữ liệu" : htmlspecialchars($row['TEN_KM'], ENT_QUOTES)) . "</td>";
-        echo "<td>" . (empty($row['CHITIETKM_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['CHITIETKM_ID'], ENT_QUOTES)) . "</td>";
+        echo "<td style='font-weight: bold; color: red;'>" . (empty($row['CHITIETKM_ID']) ? "Không có dữ liệu" : htmlspecialchars($row['CHITIETKM_ID'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['TEN_CTKM']) ? "Không có dữ liệu" : htmlspecialchars($row['TEN_CTKM'], ENT_QUOTES)) . "</td>";
-        echo "<td>" . (empty($row['SO_THANG_DTC']) ? "Không có dữ liệu" : htmlspecialchars($row['SO_THANG_DTC'], ENT_QUOTES)) . "</td>";
-        echo "<td>" . (empty($row['DATCOC_CSD']) ? "Không có dữ liệu" : htmlspecialchars($row['DATCOC_CSD'], ENT_QUOTES)) . "</td>";
+        echo "<td style='font-weight: bold; color: red;'>" . (empty($row['SO_THANG_DTC']) ? "Không có dữ liệu" : htmlspecialchars($row['SO_THANG_DTC'], ENT_QUOTES)) . "</td>";
+        echo "<td style='font-weight: bold; color: red;'>" . (empty($row['DATCOC_CSD']) ? "Không có dữ liệu" : htmlspecialchars($row['DATCOC_CSD'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['TIEN_TD']) ? "Không có dữ liệu" : htmlspecialchars($row['TIEN_TD'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['NGUOI_CN']) ? "Không có dữ liệu" : htmlspecialchars($row['NGUOI_CN'], ENT_QUOTES)) . "</td>";
         echo "<td>" . (empty($row['NGAY_CN']) ? "Không có dữ liệu" : htmlspecialchars($row['NGAY_CN'], ENT_QUOTES)) . "</td>";
